@@ -5,6 +5,8 @@
 using namespace mzawada::lab;
 using namespace std;
 
+constexpr unsigned int iters = 10'000'000;
+
 static void BM_BubbleSort(benchmark::State &state)
 {
     vector<uint8_t> input = {3, 2, 4, 1, 3};
@@ -29,8 +31,17 @@ static void BM_BubbleSort_v2(benchmark::State &state)
     }
 }
 
-BENCHMARK(BM_BubbleSort)->Iterations(250'000'000);
-BENCHMARK(BM_BubbleSort_swap)->Iterations(250'000'000);
-BENCHMARK(BM_BubbleSort_v2)->Iterations(250'000'000);
+static void BM_BubbleSort_v2_with_skip(benchmark::State &state)
+{
+    vector<uint8_t> input = {3, 2, 4, 1, 3};
+    for (auto _ : state) {
+        bubble_sort_v2_with_skip(input.data(), input.size());
+    }
+}
+
+BENCHMARK(BM_BubbleSort)->Iterations(iters);
+BENCHMARK(BM_BubbleSort_swap)->Iterations(iters);
+BENCHMARK(BM_BubbleSort_v2)->Iterations(iters);
+BENCHMARK(BM_BubbleSort_v2_with_skip)->Iterations(iters);
 
 BENCHMARK_MAIN();

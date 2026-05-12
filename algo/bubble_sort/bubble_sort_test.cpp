@@ -8,6 +8,7 @@
 using namespace mzawada::lab;
 using namespace std;
 
+
 TEST(BubbleSort, TestSort)
 {
     vector<uint8_t> input = {3, 2, 4, 1, 3};
@@ -29,5 +30,13 @@ TEST(BubbleSort, TestSortV2)
     vector<uint8_t> input = {3, 2, 4, 1, 3};
     vector<uint8_t> expected = {1, 2, 3, 3, 4};
     bubble_sort_v2(input.data(), input.size());
+    EXPECT_THAT(input, testing::ContainerEq(expected));
+}
+
+TEST(BubbleSort, TestSortV2WithSkip)
+{
+    vector<uint8_t> input = {3, 2, 4, 1, 3};
+    vector<uint8_t> expected = {1, 2, 3, 3, 4};
+    bubble_sort_v2_with_skip(input.data(), input.size());
     EXPECT_THAT(input, testing::ContainerEq(expected));
 }
