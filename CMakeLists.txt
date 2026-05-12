@@ -5,15 +5,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(GTest REQUIRED)
-find_package(PkgConfig REQUIRED)
 find_package(benchmark REQUIRED)
 
-set(EXTERNAL_SOURCES
-    # none at this moment
-)
-
 add_library(cpp_algorithms_lab STATIC 
-    ${EXTERNAL_SOURCES}
     algo/bubble_sort/bubble_sort.cpp
 )
 
@@ -21,26 +15,33 @@ target_include_directories(cpp_algorithms_lab PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(cpp_algorithms_lab PUBLIC 
-    benchmark::benchmark
+add_executable(algolab main.cpp)
+target_link_libraries(algolab PRIVATE 
+    cpp_algorithms_lab
+    benchmark::benchmark 
 )
 
-add_executable(algolab main.cpp)
-target_link_libraries(algolab PRIVATE cpp_algorithms_lab)
+##
+## Bench
+##
+
+add_executable(benchmarks algo/bubble_sort/bubble_sort_bench.cpp)
+
+target_link_libraries(benchmarks PRIVATE 
+    cpp_algorithms_lab 
+    benchmark::benchmark_main
+)
 
 ##
-## Tests
+## Testy
 ##
 
 enable_testing()
 
-set(TEST_SOURCES
-    algo/bubble_sort/bubble_sort_test.cpp
-)
-
-add_executable(cpp_algorithms_tests ${TEST_SOURCES})
+add_executable(cpp_algorithms_tests algo/bubble_sort/bubble_sort_test.cpp)
 
 target_link_libraries(cpp_algorithms_tests PRIVATE 
+    cpp_algorithms_lab    
     GTest::gtest 
     GTest::gtest_main
 )

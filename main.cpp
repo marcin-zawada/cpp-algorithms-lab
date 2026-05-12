@@ -2,6 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Setting up the repo" << std::endl;
+    std::cout << "./benchmars.exe to run benchmark" << std::endl;
 }
 
